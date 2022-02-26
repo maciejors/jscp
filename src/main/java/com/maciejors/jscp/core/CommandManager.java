@@ -36,7 +36,9 @@ public class CommandManager {
      * overridden when adding this command to the command set
      */
     public boolean registerCommand(String commandName, Command command) {
-        return false;
+        boolean isOverriding = search(commandName) != null;
+        registeredCommands.put(commandName, command);
+        return isOverriding;
     }
 
     /**
