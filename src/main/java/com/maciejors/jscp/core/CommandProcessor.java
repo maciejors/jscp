@@ -27,9 +27,12 @@ public class CommandProcessor {
     /**
      * Executes a line. A line can for example contain a command invocation
      *
-     * @param line line to be executed
+     * @param line Line to be executed
+     * @return A value returned by the executed statement, or {@code null}
+     * if no value has been returned
      */
-    public void executeLine(String line) {
+    public String executeLine(String line) {
+        return null;
     }
 
     /**
