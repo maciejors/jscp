@@ -38,7 +38,11 @@ public class CommandProcessor {
      * if no value has been returned
      */
     public String executeLine(String line) {
-        return null;
+        Statement statement = parseStatement(line);
+        if (statement == null) {
+            return "Parsing error: invalid statement";
+        }
+        return statement.execute();
     }
 
     /**
