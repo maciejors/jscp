@@ -24,7 +24,7 @@ public class CommandManager {
      * such command has not been registered
      */
     public Command search(String commandName) {
-        return null;
+        return registeredCommands.getOrDefault(commandName, null);
     }
 
     /**
