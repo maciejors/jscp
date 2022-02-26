@@ -1,5 +1,7 @@
 package com.maciejors.jscp.core;
 
+import com.maciejors.jscp.annotations.CommandDescription;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +35,7 @@ public class CommandManager {
      * @return {@code true}, if a command with the same name has been
      * overridden when adding this command to the command set
      */
-    public boolean registerCommand(Command command) {
+    public boolean registerCommand(String commandName, Command command) {
         return false;
     }
 
@@ -42,7 +44,7 @@ public class CommandManager {
      * <br><br>
      * This command accepts one parameter - a command name, and prints the
      * description of a command with a given name included in
-     * {@link com.maciejors.jscp.annotations.CommandMetadata} annotation
+     * {@link CommandDescription} annotation
      */
     public void registerDefaultHelpCommand() {
     }

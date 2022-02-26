@@ -1,17 +1,18 @@
 package com.maciejors.jscp.core;
 
+import com.maciejors.jscp.annotations.CommandDescription;
+
 /**
  * Parent class for all the commands.
  * <br><br>
  * All commands operate on strings (i.e. all passed arguments are interpreted
  * as strings and so are the returned values)
  * <br><br>
- * To add metadata to the command (e.g. its name), annotate it with
- * {@link com.maciejors.jscp.annotations.CommandMetadata}.
+ * To add a description to the command, annotate it with
+ * {@link CommandDescription}.
  *
  * @see CommandManager
  * @see CommandProcessor
- * @see com.maciejors.jscp.annotations.CommandMetadata
  */
 public abstract class Command {
 
