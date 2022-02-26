@@ -7,17 +7,23 @@ import java.io.OutputStream;
 
 /**
  * Contains methods to process lines and execute them
+ * <br><br>
+ * Command call syntax (let the prefix be "!"):<br>
+ * !commandName arg1 arg2 "arg with spaces" ...
  */
 public class CommandProcessor {
 
     private final CommandManager commandManager;
+    private final String commandPrefix;
 
     /**
      * @param commandManager A command manager containing a set of
      *                       commands registered by the user
+     * @param commandPrefix Prefix to be used when calling a command
      */
-    public CommandProcessor(CommandManager commandManager) {
+    public CommandProcessor(CommandManager commandManager, String commandPrefix) {
         this.commandManager = commandManager;
+        this.commandPrefix = commandPrefix;
     }
 
     private Statement parseStatement(String line) {
@@ -43,5 +49,9 @@ public class CommandProcessor {
      * @param outputStream A stream where the output will be printed
      */
     public void startLoop(InputStream inputStream, OutputStream outputStream) {
+    }
+
+    public String getCommandPrefix() {
+        return commandPrefix;
     }
 }
