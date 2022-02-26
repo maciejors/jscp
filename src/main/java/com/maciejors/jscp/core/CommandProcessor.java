@@ -4,6 +4,8 @@ import com.maciejors.jscp.core.statements.Statement;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.Scanner;
 
 /**
  * Contains methods to process lines and execute them
@@ -50,9 +52,18 @@ public class CommandProcessor {
      * executed.
      *
      * @param inputStream  A stream providing lines to be executed
-     * @param outputStream A stream where the output will be printed
+     * @param printStream A stream where the output will be printed
      */
-    public void startLoop(InputStream inputStream, OutputStream outputStream) {
+    public void startLoop(InputStream inputStream, PrintStream printStream) {
+        Scanner scanner = new Scanner(inputStream);
+        while (scanner.hasNext()) {
+            String line = scanner.nextLine();
+            String output = executeLine(line);
+            // if output == null, it doesn't get printed
+            if (output != null) {
+                printStream.println(output);
+            }
+        }
     }
 
     public String getCommandPrefix() {
