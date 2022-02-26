@@ -1,6 +1,8 @@
 package com.maciejors.jscp.core;
 
 import com.maciejors.jscp.annotations.CommandDescription;
+import com.maciejors.jscp.defaultcommands.DefaultExitCommand;
+import com.maciejors.jscp.defaultcommands.DefaultHelpCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class CommandManager {
      * such command has not been registered
      */
     public Command search(String commandName) {
-        return null;
+        return registeredCommands.getOrDefault(commandName, null);
     }
 
     /**
@@ -36,7 +38,9 @@ public class CommandManager {
      * overridden when adding this command to the command set
      */
     public boolean registerCommand(String commandName, Command command) {
-        return false;
+        boolean isOverriding = search(commandName) != null;
+        registeredCommands.put(commandName, command);
+        return isOverriding;
     }
 
     /**
@@ -47,6 +51,8 @@ public class CommandManager {
      * {@link CommandDescription} annotation
      */
     public void registerDefaultHelpCommand() {
+        registerCommand("help",
+                new DefaultHelpCommand(this));
     }
 
     /**
@@ -54,5 +60,7 @@ public class CommandManager {
      * program entirely using {@code System.exit()}
      */
     public void registerDefaultExitCommand() {
+        registerCommand("exit",
+                new DefaultExitCommand());
     }
 }
