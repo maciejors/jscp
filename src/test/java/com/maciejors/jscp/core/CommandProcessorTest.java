@@ -77,6 +77,6 @@ public class CommandProcessorTest {
         // name contains illegal characters (spaces)
         commandManager.registerCommand("add two numbers", returnNull);
 
-        return new CommandProcessor(commandManager, "!");
+        return new CommandProcessor(commandManager);
     }
 }
