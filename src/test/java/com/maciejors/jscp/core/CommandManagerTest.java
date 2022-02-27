@@ -2,7 +2,8 @@ package com.maciejors.jscp.core;
 
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class CommandManagerTest {
 

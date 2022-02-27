@@ -165,6 +165,7 @@ public class CommandProcessor {
 
     /**
      * Checks if a string ends with an unescaped double quote.
+     *
      * @param s A {@link String} object to be checked
      */
     private boolean endsWithDoubleQuote(String s) {

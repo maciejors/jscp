@@ -35,7 +35,7 @@ public class CommandManager {
      *
      * @param commandName Name of the command. It should consist only of
      *                    alphanumeric characters and underscores.
-     * @param command Command to register
+     * @param command     Command to register
      * @return {@code true}, if a command with the same name has been
      * overridden when adding this command to the command set
      */
