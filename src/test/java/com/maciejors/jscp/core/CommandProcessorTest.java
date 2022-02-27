@@ -18,6 +18,10 @@ public class CommandProcessorTest {
         assertEquals("tic|tac", commandOutput);
     }
 
+    // ========================================= //
+    // ====== Double-quotes-related tests ====== //
+    // ========================================= //
+
     @Test
     public void argumentsInDoubleQuotesCorrectlySplit() {
         // arrange
