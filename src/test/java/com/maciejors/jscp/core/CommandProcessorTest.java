@@ -43,6 +43,18 @@ public class CommandProcessorTest {
     }
 
     @Test
+    public void spacesInsideQuotesDoNotChangeParsingBehaviour() {
+        // arrange
+        CommandProcessor spt = getSampleCommandProcessor();
+
+        // act
+        String commandOutput = spt.executeLine("!concat \"Ala \" \" ma\" \" kota \"");
+
+        // assert
+        assertEquals("Ala  ma kota ", commandOutput);
+    }
+
+    @Test
     public void quotesCorrectlyEscaped() {
         // arrange
         CommandProcessor spt = getSampleCommandProcessor();
@@ -53,6 +65,31 @@ public class CommandProcessorTest {
         // assert
         assertEquals("\"QuotedText\"NoQuotes", commandOutput);
     }
+
+    @Test
+    public void unmatchedDoubleQuoteProducesInvalidStatement() {
+        // arrange
+        CommandProcessor spt = getSampleCommandProcessor();
+
+        // act
+        String commandOutput = spt.executeLine("!concat \"tic\" \"tac");
+
+        // assert
+        assertTrue(commandOutput.startsWith("Error"));
+    }
+
+    @Test
+    public void unmatchedDoubleQuoteAtTheEndProducesInvalidStatement() {
+        // arrange
+        CommandProcessor spt = getSampleCommandProcessor();
+
+        // act
+        String commandOutput = spt.executeLine("!concat \"tic\" tac\"");
+
+        // assert
+        assertTrue(commandOutput.startsWith("Error"));
+    }
+
 
     private CommandProcessor getSampleCommandProcessor() {
 
