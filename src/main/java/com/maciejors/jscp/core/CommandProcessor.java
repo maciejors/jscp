@@ -10,22 +10,25 @@ import java.util.Scanner;
 /**
  * Contains methods to process lines and execute them
  * <br><br>
- * Command call syntax (let the prefix be "!"):<br>
+ * Command call syntax (given the prefix is "!"):<br>
  * !commandName arg1 arg2 "arg with spaces" ...
  */
 public class CommandProcessor {
 
     private final CommandManager commandManager;
+
+    /**
+     * Prefix to be used when calling a command
+     */
     private final String commandPrefix;
 
     /**
      * @param commandManager A command manager containing a set of
      *                       commands registered by the user
-     * @param commandPrefix Prefix to be used when calling a command
      */
-    public CommandProcessor(CommandManager commandManager, String commandPrefix) {
+    public CommandProcessor(CommandManager commandManager) {
         this.commandManager = commandManager;
-        this.commandPrefix = commandPrefix;
+        this.commandPrefix = "!";
     }
 
     private Statement parseStatement(String line) {
