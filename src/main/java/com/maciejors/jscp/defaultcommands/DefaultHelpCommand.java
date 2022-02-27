@@ -11,7 +11,7 @@ public class DefaultHelpCommand extends Command {
     /**
      * CommandManager is needed to access commands' descriptions
      */
-    private CommandManager commandManager;
+    private final CommandManager commandManager;
 
     public DefaultHelpCommand(CommandManager commandManager) {
         this.commandManager = commandManager;
