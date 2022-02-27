@@ -1,13 +1,13 @@
 package com.maciejors.jscp.core;
 
 import com.maciejors.jscp.core.statements.CommandCall;
+import com.maciejors.jscp.core.statements.InvalidStatement;
 import com.maciejors.jscp.core.statements.Statement;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Contains methods to process lines and execute them
@@ -41,24 +41,22 @@ public class CommandProcessor {
      */
     private Statement parseStatement(String line) {
         // command name and arguments are separated by spaces
-        StringTokenizer tokenizer = new StringTokenizer(" ");
+        StringTokenizer tokenizer = new StringTokenizer(line);
 
         // First token determines the type of statement.
         // For now the only statement type is the command call, so the program
         // just makes sure that the call starts with the command prefix
-        String firstToken = tokenizer.nextToken();
+        String firstToken = tokenizer.nextToken(" ");
 
         if (firstToken.startsWith(commandPrefix)) {
             Command command = commandManager.findCommand(firstToken.substring(1));
-            String[] args;
 
-            // if command == null there is no reason to parse args anyway
+            // command not found
             if (command == null) {
-                args = null;
-            } else {
-                args = parseArguments(tokenizer);
+                return new InvalidStatement("command not found");
             }
 
+            String[] args = parseArguments(tokenizer);
             return new CommandCall(command, args);
         }
 
@@ -69,7 +67,7 @@ public class CommandProcessor {
      * Parses an array of arguments as Strings from user's input
      *
      * @param tokenizer A tokenizer that initiated statement parsing
-     * @return An array of command parameters
+     * @return An array of command parameters or {@code null} if parsing failed
      */
     private String[] parseArguments(StringTokenizer tokenizer) {
         return null;
