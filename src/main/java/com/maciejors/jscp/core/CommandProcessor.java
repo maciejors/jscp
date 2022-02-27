@@ -56,6 +56,12 @@ public class CommandProcessor {
             }
 
             String[] args = parseCommandArguments(tokenizer);
+
+            // arguments failed to parse
+            if (args == null) {
+                return new InvalidStatement("error parsing arguments");
+            }
+
             return new CommandCall(command, args);
         }
 
