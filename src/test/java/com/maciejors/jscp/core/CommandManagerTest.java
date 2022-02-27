@@ -91,7 +91,7 @@ public class CommandManagerTest {
         spt.registerDefaultExitCommand();
 
         // act
-        Command foundCommand = spt.findCommand("help");
+        Command foundCommand = spt.findCommand("exit");
 
         // assert
         assertNotNull(foundCommand);
