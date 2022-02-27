@@ -83,11 +83,13 @@ public class CommandProcessor {
 
             // double quotes begin
             if (token.startsWith("\"")) {
+                // removing " from the beginning
                 token = token.substring(1);
 
                 // the following condition will be true if the token
                 // looks like this: "quotedArgument"
-                if (token.endsWith("\"") && !token.endsWith("\\\"") && token.length() != 1) {
+                if (token.length() != 1 && endsWithDoubleQuote(token)) {
+                    // removing " from the end
                     currArg = token.substring(0, token.length() - 1);
                 }
                 // otherwise, program will look for the closing quote
@@ -101,36 +103,73 @@ public class CommandProcessor {
                     while (true) {
                         currArgBuilder.append(token);
 
-                        token = tokenizer.nextToken("\"");
+                        // looking for the next double quote
+                        try {
+                            token = tokenizer.nextToken("\"");
+                        } catch (NoSuchElementException err) {
+                            // unmatched double quote produces error
+                            return null;
+                        }
 
                         // when the quote is not escaped it is treated as a
                         // closing quote
                         if (!token.endsWith("\\")) {
+                            currArgBuilder.append(token);
+                            // "skipping" the closing double quote (it
+                            // follows the token in the input string)
+                            String temp = tokenizer.nextToken(" ");
                             break;
                         }
-
-                        // unmatched double quote produces error
-                        if (!tokenizer.hasMoreTokens()) {
-                            return null;
-                        }
-                        token = tokenizer.nextToken(" ");
                     }
 
                     currArg = currArgBuilder.toString();
                 }
             }
+            // else = if the token doesn't start with double quote
             else {
+                // Here the program looks for unescaped quotes in the middle
+                // of the passed argument. Theoretically they could be left,
+                // but for consistency all double quotes have to be escaped.
+
+                // check if an unescaped quote appears at the end of the token
+                if (endsWithDoubleQuote(token)) {
+                    return null;
+                }
+
+                // look for unescaped quotes in the middle of the token
+                StringTokenizer tokenizerDoubleQuotesDelim = new StringTokenizer(token, "\"");
+                while (tokenizerDoubleQuotesDelim.countTokens() > 1) {
+                    // piece of text just before the next double quote
+                    String piece = tokenizerDoubleQuotesDelim.nextToken();
+                    // Check if the following quote is escaped.
+                    if (endsWithDoubleQuote(piece + "\"")) {
+                        return null;
+                    }
+                }
+
                 currArg = token;
             }
 
+            // remove backslashes from escaped double quotes
+            currArg = currArg.replace("\\\"", "\"");
             argsDeque.add(currArg);
         }
 
-        String[] args = new String[argsDeque.size()];
-        for (int i = 0; i < argsDeque.size(); i++) {
+        int numberOfArguments = argsDeque.size();
+        String[] args = new String[numberOfArguments];
+        for (int i = 0; i < numberOfArguments; i++) {
             args[i] = argsDeque.removeFirst();
         }
         return args;
+    }
+
+    /**
+     * Checks if a string ends with an unescaped double quote.
+     * @param s A {@link String} object to be checked
+     */
+    private boolean endsWithDoubleQuote(String s) {
+        return s.endsWith("\"") &&  // does it end with "?
+                !s.endsWith("\\\"");  // is " not escaped?
     }
 
     /**
