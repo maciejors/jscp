@@ -26,6 +26,6 @@ public class CommandCall extends Statement {
      */
     @Override
     public String execute() {
-        return null;
+        return command.call(args);
     }
 }

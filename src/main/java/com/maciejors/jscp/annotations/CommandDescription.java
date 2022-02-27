@@ -16,5 +16,5 @@ public @interface CommandDescription {
     /**
      * Command description
      */
-    String defaultHelpDescription();
+    String value();
 }
