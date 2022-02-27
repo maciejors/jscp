@@ -2,8 +2,7 @@ package com.maciejors.jscp.core;
 
 import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CommandManagerTest {
 
@@ -72,4 +71,29 @@ public class CommandManagerTest {
         assertSame(commandOverride, foundCommand);
     }
 
+    @Test
+    public void defaultHelpCommandCorrectlyRegistered() {
+        // arrange
+        CommandManager spt = new CommandManager();
+        spt.registerDefaultHelpCommand();
+
+        // act
+        Command foundCommand = spt.findCommand("help");
+
+        // assert
+        assertNotNull(foundCommand);
+    }
+
+    @Test
+    public void defaultExitCommandCorrectlyRegistered() {
+        // arrange
+        CommandManager spt = new CommandManager();
+        spt.registerDefaultExitCommand();
+
+        // act
+        Command foundCommand = spt.findCommand("help");
+
+        // assert
+        assertNotNull(foundCommand);
+    }
 }
