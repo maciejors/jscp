@@ -15,7 +15,7 @@ public class CommandProcessorTest {
         String commandOutput = spt.executeLine("!concat tic tac");
 
         // assert
-        assertEquals("tictac", commandOutput);
+        assertEquals("tic|tac", commandOutput);
     }
 
     @Test
@@ -27,7 +27,7 @@ public class CommandProcessorTest {
         String commandOutput = spt.executeLine("!concat Ala \" ma kota\" \".\"");
 
         // assert
-        assertEquals("Ala ma kota.", commandOutput);
+        assertEquals("Ala| ma kota|.", commandOutput);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class CommandProcessorTest {
         String commandOutput = spt.executeLine("!concat \"Ala \" \" ma\" \" kota \"");
 
         // assert
-        assertEquals("Ala  ma kota ", commandOutput);
+        assertEquals("Ala | ma| kota ", commandOutput);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class CommandProcessorTest {
         String commandOutput = spt.executeLine("!concat \\\"QuotedText\\\" \"NoQuotes\"");
 
         // assert
-        assertEquals("\"QuotedText\"NoQuotes", commandOutput);
+        assertEquals("\"QuotedText\"|NoQuotes", commandOutput);
     }
 
     @Test
@@ -93,10 +93,10 @@ public class CommandProcessorTest {
 
     private CommandProcessor getSampleCommandProcessor() {
 
-        Command concatStringsCommand = new Command() {
+        Command joinStringsCommand = new Command() {
             @Override
             public String call(String[] args) {
-                return String.join("", args);
+                return String.join("|", args);
             }
         };
 
@@ -109,7 +109,7 @@ public class CommandProcessorTest {
 
         CommandManager commandManager = new CommandManager();
 
-        commandManager.registerCommand("concat", concatStringsCommand);
+        commandManager.registerCommand("concat", joinStringsCommand);
         commandManager.registerCommand("null", returnNull);
         // name contains illegal characters (spaces)
         commandManager.registerCommand("add two numbers", returnNull);
