@@ -117,7 +117,7 @@ public class CommandProcessor {
                             currArgBuilder.append(token);
                             // "skipping" the closing double quote (it
                             // follows the token in the input string)
-                            String temp = tokenizer.nextToken(" ");
+                            tokenizer.nextToken(" ");
                             break;
                         }
                     }
