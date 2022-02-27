@@ -10,6 +10,6 @@ public class InvalidStatement extends Statement {
 
     @Override
     public String execute() {
-        return errorMsg;
+        return "Error: " + errorMsg;
     }
 }
