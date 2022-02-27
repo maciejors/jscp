@@ -25,7 +25,7 @@ public class CommandManager {
      * @return A {@link Command} with the specified name or {@code null} if
      * such command has not been registered
      */
-    public Command search(String commandName) {
+    public Command findCommand(String commandName) {
         return registeredCommands.getOrDefault(commandName, null);
     }
 
@@ -45,7 +45,7 @@ public class CommandManager {
                     commandName + "\" not registered");
             return false;
         }
-        boolean isOverriding = search(commandName) != null;
+        boolean isOverriding = findCommand(commandName) != null;
         registeredCommands.put(commandName, command);
         return isOverriding;
     }
