@@ -5,7 +5,6 @@ import com.maciejors.jscp.core.statements.InvalidStatement;
 import com.maciejors.jscp.core.statements.Statement;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -56,7 +55,7 @@ public class CommandProcessor {
                 return new InvalidStatement("command not found");
             }
 
-            String[] args = parseArguments(tokenizer);
+            String[] args = parseCommandArguments(tokenizer);
             return new CommandCall(command, args);
         }
 
@@ -69,8 +68,63 @@ public class CommandProcessor {
      * @param tokenizer A tokenizer that initiated statement parsing
      * @return An array of command parameters or {@code null} if parsing failed
      */
-    private String[] parseArguments(StringTokenizer tokenizer) {
-        return null;
+    private String[] parseCommandArguments(StringTokenizer tokenizer) {
+        Deque<String> argsDeque = new LinkedList<>();
+
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken(" ");
+            String currArg;
+
+            // double quotes begin
+            if (token.startsWith("\"")) {
+                token = token.substring(1);
+
+                // the following condition will be true if the token
+                // looks like this: "quotedArgument"
+                if (token.endsWith("\"") && !token.endsWith("\\\"") && token.length() != 1) {
+                    currArg = token.substring(0, token.length() - 1);
+                }
+                // otherwise, program will look for the closing quote
+                // somewhere further after the token
+                else {
+                    // tokens will be concatenated until an unescaped
+                    // double quote is found
+                    StringBuilder currArgBuilder = new StringBuilder();
+
+                    // looking for the closing quote
+                    while (true) {
+                        currArgBuilder.append(token);
+
+                        token = tokenizer.nextToken("\"");
+
+                        // when the quote is not escaped it is treated as a
+                        // closing quote
+                        if (!token.endsWith("\\")) {
+                            break;
+                        }
+
+                        // unmatched double quote produces error
+                        if (!tokenizer.hasMoreTokens()) {
+                            return null;
+                        }
+                        token = tokenizer.nextToken(" ");
+                    }
+
+                    currArg = currArgBuilder.toString();
+                }
+            }
+            else {
+                currArg = token;
+            }
+
+            argsDeque.add(currArg);
+        }
+
+        String[] args = new String[argsDeque.size()];
+        for (int i = 0; i < argsDeque.size(); i++) {
+            args[i] = argsDeque.removeFirst();
+        }
+        return args;
     }
 
     /**
