@@ -28,7 +28,7 @@ public class DefaultHelpCommand extends Command {
             commandName = args[0];
         }
 
-        Command command = commandManager.search(commandName);
+        Command command = commandManager.findCommand(commandName);
 
         if (command == null) {
             return "Can't find a command named \"" + commandName + "\"";
