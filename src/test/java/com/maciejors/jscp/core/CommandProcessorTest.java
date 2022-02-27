@@ -19,7 +19,7 @@ public class CommandProcessorTest {
     }
 
     @Test
-    public void argumentsInDoubleQuotesCorrectlyProcessed() {
+    public void argumentsInDoubleQuotesCorrectlySplit() {
         // arrange
         CommandProcessor spt = getSampleCommandProcessor();
 
@@ -28,6 +28,30 @@ public class CommandProcessorTest {
 
         // assert
         assertEquals("Ala ma kota.", commandOutput);
+    }
+
+    @Test
+    public void quotesInsideArgumentsIgnored() {
+        // arrange
+        CommandProcessor spt = getSampleCommandProcessor();
+
+        // act
+        String commandOutput = spt.executeLine("!concat Ma\"y the \"f\"orce b\"\"e\" w\"i\"th you");
+
+        // assert
+        assertEquals("Ma\"ythef\"orce b\"\"ew\"i\"thyou", commandOutput);
+    }
+
+    @Test
+    public void quotesCorrectlyEscaped() {
+        // arrange
+        CommandProcessor spt = getSampleCommandProcessor();
+
+        // act
+        String commandOutput = spt.executeLine("!concat \\\"QuotedText\\\" \"NoQuotes\"");
+
+        // assert
+        assertEquals("\"QuotedText\"NoQuotes", commandOutput);
     }
 
     private CommandProcessor getSampleCommandProcessor() {
