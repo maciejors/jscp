@@ -31,7 +31,21 @@ public class CommandProcessor {
         this.commandPrefix = "!";
     }
 
+    /**
+     * Parses a statement from the input
+     * @param line A line of input
+     * @return A {@link Statement} object that can be later executed
+     */
     private Statement parseStatement(String line) {
+        return null;
+    }
+
+    /**
+     * Parses an array of arguments as Strings from a text input
+     * @param passedArgs Text that followed a command name in the command call
+     * @return An array of command parameters
+     */
+    private String[] parseArguments(String passedArgs) {
         return null;
     }
 
