@@ -31,15 +31,15 @@ public class CommandProcessorTest {
     }
 
     @Test
-    public void quotesInsideArgumentsIgnored() {
+    public void unescapedQuotesInsideArgumentsProduceInvalidStatement() {
         // arrange
         CommandProcessor spt = getSampleCommandProcessor();
 
         // act
-        String commandOutput = spt.executeLine("!concat Ma\"y the \"f\"orce b\"\"e\" w\"i\"th you");
+        String commandOutput = spt.executeLine("!concat t\"ic \"ta\"c\"");
 
         // assert
-        assertEquals("Ma\"ythef\"orce b\"\"ew\"i\"thyou", commandOutput);
+        assertTrue(commandOutput.startsWith("Error"));
     }
 
     @Test
