@@ -1,10 +1,10 @@
-import com.maciejors.jscp.core.Command;
-import com.maciejors.jscp.core.CommandManager;
-import com.maciejors.jscp.core.CommandProcessor;
-import org.junit.Test;
-import static org.junit.Assert.*;
+package com.maciejors.jscp.core;
 
-public class TestCommandProcessor {
+import org.junit.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CommandProcessorTest {
 
     @Test
     public void lineExecutionProducesOutput() {
@@ -40,46 +40,6 @@ public class TestCommandProcessor {
 
         // assert
         assertEquals("11", commandOutput);
-    }
-
-    @Test
-    public void commandsWithSpacesNotRegistered() {
-        // arrange
-        Command addTwoNumbers = new Command() {
-            @Override
-            public String call(String[] args) {
-                int n1 = Integer.parseInt(args[0]);
-                int n2 = Integer.parseInt(args[1]);
-                return String.valueOf(n1 + n2);
-            }
-        };
-        CommandManager commandManager = new CommandManager();
-
-        // act
-        commandManager.registerCommand("add two numbers", addTwoNumbers);
-
-        // assert
-        assertNull(commandManager.search("add two numbers"));
-    }
-
-    @Test
-    public void commandsWithIllegalCharactersNotRegistered() {
-        // arrange
-        Command addTwoNumbers = new Command() {
-            @Override
-            public String call(String[] args) {
-                int n1 = Integer.parseInt(args[0]);
-                int n2 = Integer.parseInt(args[1]);
-                return String.valueOf(n1 + n2);
-            }
-        };
-        CommandManager commandManager = new CommandManager();
-
-        // act
-        commandManager.registerCommand("add@two#numbers", addTwoNumbers);
-
-        // assert
-        assertNull(commandManager.search("add@two#numbers"));
     }
 
     private CommandProcessor getSampleCommandProcessor() {
