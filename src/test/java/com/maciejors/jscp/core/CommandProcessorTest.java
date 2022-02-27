@@ -115,8 +115,6 @@ public class CommandProcessorTest {
 
         commandManager.registerCommand("concat", joinStringsCommand);
         commandManager.registerCommand("null", returnNull);
-        // name contains illegal characters (spaces)
-        commandManager.registerCommand("add two numbers", returnNull);
 
         return new CommandProcessor(commandManager);
     }
