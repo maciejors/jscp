@@ -26,6 +26,9 @@ public class CommandCall extends Statement {
      */
     @Override
     public String execute() {
+        if (command == null) {
+            return "Error: command not found";
+        }
         return command.call(args);
     }
 }
