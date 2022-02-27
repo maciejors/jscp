@@ -1,11 +1,13 @@
 package com.maciejors.jscp.core;
 
+import com.maciejors.jscp.core.statements.CommandCall;
 import com.maciejors.jscp.core.statements.Statement;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 /**
  * Contains methods to process lines and execute them
@@ -33,19 +35,43 @@ public class CommandProcessor {
 
     /**
      * Parses a statement from the input
+     *
      * @param line A line of input
      * @return A {@link Statement} object that can be later executed
      */
     private Statement parseStatement(String line) {
+        // command name and arguments are separated by spaces
+        StringTokenizer tokenizer = new StringTokenizer(" ");
+
+        // First token determines the type of statement.
+        // For now the only statement type is the command call, so the program
+        // just makes sure that the call starts with the command prefix
+        String firstToken = tokenizer.nextToken();
+
+        if (firstToken.startsWith(commandPrefix)) {
+            Command command = commandManager.findCommand(firstToken.substring(1));
+            String[] args;
+
+            // if command == null there is no reason to parse args anyway
+            if (command == null) {
+                args = null;
+            } else {
+                args = parseArguments(tokenizer);
+            }
+
+            return new CommandCall(command, args);
+        }
+
         return null;
     }
 
     /**
-     * Parses an array of arguments as Strings from a text input
-     * @param passedArgs Text that followed a command name in the command call
+     * Parses an array of arguments as Strings from user's input
+     *
+     * @param tokenizer A tokenizer that initiated statement parsing
      * @return An array of command parameters
      */
-    private String[] parseArguments(String passedArgs) {
+    private String[] parseArguments(StringTokenizer tokenizer) {
         return null;
     }
 
@@ -68,7 +94,7 @@ public class CommandProcessor {
      * Starts a loop, where in each iteration a single statement gets
      * executed.
      *
-     * @param inputStream  A stream providing lines to be executed
+     * @param inputStream A stream providing lines to be executed
      * @param printStream A stream where the output will be printed
      */
     public void startLoop(InputStream inputStream, PrintStream printStream) {
