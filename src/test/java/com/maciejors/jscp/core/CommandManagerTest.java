@@ -9,41 +9,37 @@ public class CommandManagerTest {
     @Test
     public void commandsWithSpacesNotRegistered() {
         // arrange
-        Command addTwoNumbers = new Command() {
+        Command command = new Command() {
             @Override
             public String call(String[] args) {
-                int n1 = Integer.parseInt(args[0]);
-                int n2 = Integer.parseInt(args[1]);
-                return String.valueOf(n1 + n2);
+                return null;
             }
         };
         CommandManager commandManager = new CommandManager();
 
         // act
-        commandManager.registerCommand("add two numbers", addTwoNumbers);
+        commandManager.registerCommand("a cool command", command);
 
         // assert
-        assertNull(commandManager.findCommand("add two numbers"));
+        assertNull(commandManager.findCommand("a cool command"));
     }
 
     @Test
     public void commandsWithIllegalCharactersNotRegistered() {
         // arrange
-        Command addTwoNumbers = new Command() {
+        Command command = new Command() {
             @Override
             public String call(String[] args) {
-                int n1 = Integer.parseInt(args[0]);
-                int n2 = Integer.parseInt(args[1]);
-                return String.valueOf(n1 + n2);
+                return null;
             }
         };
         CommandManager commandManager = new CommandManager();
 
         // act
-        commandManager.registerCommand("add@two#numbers", addTwoNumbers);
+        commandManager.registerCommand("a@cool#\"command", command);
 
         // assert
-        assertNull(commandManager.findCommand("add@two#numbers"));
+        assertNull(commandManager.findCommand("a@cool#\"command"));
     }
 
     @Test
@@ -51,34 +47,28 @@ public class CommandManagerTest {
         // arrange
         CommandManager spt = new CommandManager();
 
-        // Increases int from input by 5. Will be overridden later
-        Command increaseInt = new Command() {
+        Command command = new Command() {
             @Override
             public String call(String[] args) {
-                return String.valueOf(
-                        Integer.parseInt(args[0]) + 5
-                );
+                return null;
             }
         };
 
-        // Increases int from input by 10.
-        Command increaseIntOverride = new Command() {
+        Command commandOverride = new Command() {
             @Override
             public String call(String[] args) {
-                return String.valueOf(
-                        Integer.parseInt(args[0]) + 10
-                );
+                return null;
             }
         };
 
-        spt.registerCommand("increaseInt", increaseInt);
-        spt.registerCommand("increaseInt", increaseIntOverride);
+        spt.registerCommand("myCommand", command);
+        spt.registerCommand("myCommand", commandOverride);
 
         // act
-        Command foundCommand = spt.findCommand("increaseInt");
+        Command foundCommand = spt.findCommand("myCommand");
 
         // assert
-        assertSame(increaseIntOverride, foundCommand);
+        assertSame(commandOverride, foundCommand);
     }
 
 }
