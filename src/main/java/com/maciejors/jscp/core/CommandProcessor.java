@@ -79,30 +79,28 @@ public class CommandProcessor {
 
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken(" ");
-            String currArg;
+            String currArg = token;
 
             // double quotes begin
-            if (token.startsWith("\"")) {
+            if (currArg.startsWith("\"")) {
                 // removing " from the beginning
-                token = token.substring(1);
+                currArg = currArg.substring(1);
 
                 // the following condition will be true if the token
                 // looks like this: "quotedArgument"
-                if (token.length() != 1 && endsWithDoubleQuote(token)) {
+                if (currArg.length() != 1 && endsWithDoubleQuote(currArg)) {
                     // removing " from the end
-                    currArg = token.substring(0, token.length() - 1);
+                    currArg = currArg.substring(0, currArg.length() - 1);
                 }
                 // otherwise, program will look for the closing quote
                 // somewhere further after the token
                 else {
                     // tokens will be concatenated until an unescaped
                     // double quote is found
-                    StringBuilder currArgBuilder = new StringBuilder();
+                    StringBuilder currArgBuilder = new StringBuilder(currArg);
 
                     // looking for the closing quote
                     while (true) {
-                        currArgBuilder.append(token);
-
                         // looking for the next double quote
                         try {
                             token = tokenizer.nextToken("\"");
@@ -110,44 +108,40 @@ public class CommandProcessor {
                             // unmatched double quote produces error
                             return null;
                         }
+                        currArgBuilder.append(token);
 
                         // when the quote is not escaped it is treated as a
                         // closing quote
                         if (!token.endsWith("\\")) {
-                            currArgBuilder.append(token);
+                            currArg = currArgBuilder.toString();
                             // "skipping" the closing double quote (it
                             // follows the token in the input string)
                             tokenizer.nextToken(" ");
                             break;
+                        } else {
+                            // adding an escaped double quote
+                            currArgBuilder.append("\"");
                         }
                     }
-
-                    currArg = currArgBuilder.toString();
                 }
             }
-            // else = if the token doesn't start with double quote
-            else {
-                // Here the program looks for unescaped quotes in the middle
-                // of the passed argument. Theoretically they could be left,
-                // but for consistency all double quotes have to be escaped.
 
-                // check if an unescaped quote appears at the end of the token
-                if (endsWithDoubleQuote(token)) {
-                    return null;
-                }
+            // Here the program looks for unescaped quotes in the middle
+            // of the passed argument. Theoretically they could be left,
+            // but for consistency all double quotes have to be escaped.
 
-                // look for unescaped quotes in the middle of the token
-                StringTokenizer tokenizerDoubleQuotesDelim = new StringTokenizer(token, "\"");
-                while (tokenizerDoubleQuotesDelim.countTokens() > 1) {
-                    // piece of text just before the next double quote
-                    String piece = tokenizerDoubleQuotesDelim.nextToken();
-                    // Check if the following quote is escaped.
-                    if (endsWithDoubleQuote(piece + "\"")) {
+            // check if an unescaped quote appears at the end of the token
+            if (endsWithDoubleQuote(currArg)) {
+                return null;
+            }
+
+            // look for unescaped quotes in the middle of the token
+            for (int i = 1; i < currArg.length(); i++) {
+                if (currArg.charAt(i) == '"') {
+                    if (currArg.charAt(i - 1) != '\\') {
                         return null;
                     }
                 }
-
-                currArg = token;
             }
 
             // remove backslashes from escaped double quotes

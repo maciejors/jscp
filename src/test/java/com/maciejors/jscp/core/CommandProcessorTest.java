@@ -95,6 +95,42 @@ public class CommandProcessorTest {
         assertTrue(commandOutput.startsWith("Error"));
     }
 
+    @Test
+    public void quotesFilledWithUnescapedQuotesProduceInvalidStatement() {
+        // arrange
+        CommandProcessor spt = getSampleCommandProcessor();
+
+        // act
+        String commandOutput = spt.executeLine("!concat \"\"\"\"");
+
+        // assert
+        assertTrue(commandOutput.startsWith("Error"));
+    }
+
+    @Test
+    public void quotesAlmostFilledWithUnescapedQuotesProduceInvalidStatement() {
+        // arrange
+        CommandProcessor spt = getSampleCommandProcessor();
+
+        // act
+        String commandOutput = spt.executeLine("!concat \"\"\"a\"");
+
+        // assert
+        assertTrue(commandOutput.startsWith("Error"));
+    }
+
+    @Test
+    public void quotesAlmostFilledWithUnescapedQuotesProduceInvalidStatement2() {
+        // arrange
+        CommandProcessor spt = getSampleCommandProcessor();
+
+        // act
+        String commandOutput = spt.executeLine("!concat \"a\"\"\"");
+
+        // assert
+        assertTrue(commandOutput.startsWith("Error"));
+    }
+
 
     private CommandProcessor getSampleCommandProcessor() {
 
