@@ -16,15 +16,6 @@ import java.util.*;
  */
 public class CommandProcessor {
 
-    public static void main(String[] args) {
-        CommandManager commandManager = new CommandManager();
-        commandManager.registerDefaultExitCommand();
-        commandManager.registerDefaultHelpCommand();
-
-        CommandProcessor commandProcessor = new CommandProcessor(commandManager);
-        commandProcessor.startLoop(System.in, System.out);
-    }
-
     private final CommandManager commandManager;
 
     /**
