@@ -16,6 +16,15 @@ import java.util.*;
  */
 public class CommandProcessor {
 
+    public static void main(String[] args) {
+        CommandManager commandManager = new CommandManager();
+        commandManager.registerDefaultExitCommand();
+        commandManager.registerDefaultHelpCommand();
+
+        CommandProcessor commandProcessor = new CommandProcessor(commandManager);
+        commandProcessor.startLoop(System.in, System.out);
+    }
+
     private final CommandManager commandManager;
 
     /**
@@ -45,7 +54,13 @@ public class CommandProcessor {
         // First token determines the type of statement.
         // For now the only statement type is the command call, so the program
         // just makes sure that the call starts with the command prefix
-        String firstToken = tokenizer.nextToken(" ");
+        String firstToken;
+        try {
+            firstToken = tokenizer.nextToken(" ");
+        } catch (NoSuchElementException err) {
+            // when the input is blank
+            return null;
+        }
 
         if (firstToken.startsWith(commandPrefix)) {
             Command command = commandManager.findCommand(firstToken.substring(1));
@@ -65,7 +80,7 @@ public class CommandProcessor {
             return new CommandCall(command, args);
         }
 
-        return null;
+        return new InvalidStatement("Parsing error: invalid statement");
     }
 
     /**
@@ -177,7 +192,7 @@ public class CommandProcessor {
     public String executeLine(String line) {
         Statement statement = parseStatement(line);
         if (statement == null) {
-            return "Parsing error: invalid statement";
+            return "";
         }
         return statement.execute();
     }
@@ -194,10 +209,7 @@ public class CommandProcessor {
         while (scanner.hasNext()) {
             String line = scanner.nextLine();
             String output = executeLine(line);
-            // if output == null, it doesn't get printed
-            if (output != null) {
-                printStream.println(output);
-            }
+            printStream.println(output);
         }
     }
 
