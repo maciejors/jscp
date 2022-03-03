@@ -32,6 +32,10 @@ public class CommandProcessor {
         this.commandPrefix = "!";
     }
 
+    public CommandProcessor() {
+        this(new CommandManager());
+    }
+
     /**
      * Parses a statement from the input
      *
@@ -203,5 +207,9 @@ public class CommandProcessor {
 
     public String getCommandPrefix() {
         return commandPrefix;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 }
